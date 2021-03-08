@@ -1,4 +1,4 @@
-// 牌组 构造函数
+// 牌组类
 class Porker {
     constructor(huaSe, shu, porker) {
             this.data = {
@@ -213,7 +213,65 @@ class Porker {
         })
     }
 }
-
+// 打开折叠类
+class Controls {
+    constructor(openFlag, coverAllFlag) {
+        openFlag,
+        coverAllFlag
+    };
+    // 展开,使用vw，vh做响应式
+    openPorker() {
+            let divs = document.querySelector('#porker').querySelectorAll('div');
+            let count = 0;
+            let c1 = 0,
+                c2 = 0,
+                c3 = 0;
+            divs.forEach((item, index) => {
+                if (index <= 17) {
+                    item.style.left = c1 + 'vw';
+                    c1 += 5;
+                    item.style.top = count + 'vh';
+                } else if (index > 17 && index <= 35) {
+                    item.style.left = c2 + 'vw';
+                    c2 += 5;
+                    item.style.top = count + 10 + 'vh';
+                } else {
+                    item.style.left = c3 + 'vw';
+                    c3 += 5;
+                    item.style.top = count + 20 + 'vh';
+                }
+            })
+        }
+        // 折叠
+    closePorker() {
+            let divs = document.querySelector('#porker').querySelectorAll('div');
+            divs.forEach(item => {
+                item.style.left = 0;
+                item.style.top = 0;
+            })
+        }
+        // 一键控制展开，折叠
+    openPorkerOrClose() {
+        if (this.openFlag == true) {
+            this.openPorker();
+        } else {
+            this.closePorker();
+        }
+        this.openFlag = !this.openFlag;
+    }
+    coverAll() {
+        let imgs = document.querySelector('#porker').querySelectorAll('img');
+        if (this.coverAllFlag == true) {
+            imgs.forEach(item =>
+                item.style.opacity = 0);
+        } else {
+            imgs.forEach(item =>
+                item.style.opacity = 1);
+        }
+        this.coverAllFlag = !this.coverAllFlag;
+    }
+}
+let controls = new Controls(true, true);
 
 // 顺序显示
 function sortPorkerAndDisplay() {
@@ -228,63 +286,6 @@ function washPorkerAndDisplay() {
     p.washPorker();
     p.setImg();
 }
-
-// 控制盖住打开
-// 控制展开折叠flag
-let openFlag = true;
-// 控制全部覆盖还是打开flag
-let coverALLFlag = true;
-// 展开,使用vw，vh做响应式
-function openPorker() {
-    let divs = document.querySelector('#porker').querySelectorAll('div');
-    let count = 0;
-    let c1 = c2 = c3 = 0;
-    divs.forEach((item, index) => {
-        if (index <= 17) {
-            item.style.left = c1 + 'vw';
-            c1 += 5;
-            item.style.top = count + 'vh';
-        } else if (index > 17 && index <= 35) {
-            item.style.left = c2 + 'vw';
-            c2 += 5;
-            item.style.top = count + 10 + 'vh';
-        } else {
-            item.style.left = c3 + 'vw';
-            c3 += 5;
-            item.style.top = count + 20 + 'vh';
-        }
-    })
-}
-// 折叠
-function closePorker() {
-    let divs = document.querySelector('#porker').querySelectorAll('div');
-    divs.forEach(item => {
-        item.style.left = 0;
-        item.style.top = 0;
-    })
-}
-// 一键控制展开，折叠
-function openPorkerOrClose() {
-    if (openFlag == true) {
-        openPorker();
-    } else {
-        closePorker();
-    }
-    openFlag = !openFlag;
-}
-// 覆盖全部
-function coverAll() {
-    let imgs = document.querySelector('#porker').querySelectorAll('img');
-    if (coverALLFlag == true) {
-        imgs.forEach(item =>
-            item.style.opacity = 0);
-    } else {
-        imgs.forEach(item =>
-            item.style.opacity = 1);
-    }
-    coverALLFlag = !coverALLFlag;
-}
-
 //添加事件
 // 单张盖住或显示
 function EventOne() {
@@ -309,14 +310,13 @@ function EventOne() {
     });
 }
 // 每个按钮添加事件
-function addEvent() {
+function addEvents() {
     EventOne();
     document.querySelector('#washed').addEventListener('click', washPorkerAndDisplay);
     document.querySelector('#origin').addEventListener('click', sortPorkerAndDisplay);
-    document.querySelector('#zhankai').addEventListener('click', openPorkerOrClose);
-    document.querySelector('#coverAll').addEventListener('click', coverAll);
+    document.querySelector('#zhankai').addEventListener('click', controls.openPorkerOrClose.bind(controls));
+    document.querySelector('#coverAll').addEventListener('click', controls.coverAll);
 }
-
-addEvent();
+addEvents();
+// 初始化
 sortPorkerAndDisplay();
-openPorkerOrClose();
