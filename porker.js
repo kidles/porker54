@@ -1,38 +1,33 @@
-// 牌组类
+// 牌组
 class Porker {
-    constructor(huaSe, shu, porker) {
-            this.data = {
-                huaSe,
-                shu,
-                porker,
-            };
-            this.data.huaSe = ['方块', '红桃', '梅花', '黑桃'];
-            this.data.shu = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K'];
+    constructor() {
+            this.huaSe = ['方块', '红桃', '梅花', '黑桃'];
+            this.shuZi = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K'];
             // 存取字符串数组
-            this.data.porker = ['大王', '小王'];
+            this.porker = ['大王', '小王'];
         }
         // 原始牌组方法
     origin() {
-            for (let v of this.data.huaSe) {
-                for (let j of this.data.shu) {
-                    this.data.porker.push(v + j);
+            for (let v of this.huaSe) {
+                for (let j of this.shuZi) {
+                    this.porker.push(v + j);
                 }
             }
-            return this.data.porker;
+            return this.porker;
         }
         // 洗牌方法
     washPorker() {
             // 存放生成的新牌组
             let newPorker = [];
-            for (let i = 0; i < this.data.porker.length; i++) {
-                let index = Math.floor(Math.random() * this.data.porker.length);
-                newPorker[i] = this.data.porker[index];
+            for (let i = 0; i < this.porker.length; i++) {
+                let index = Math.floor(Math.random() * this.porker.length);
+                newPorker[i] = this.porker[index];
             }
-            this.data.porker = newPorker;
-            return this.data.porker;
+            this.porker = newPorker;
+            return this.porker;
         }
         // 设置字符串对应图片src
-    setImg(origin = this.data.porker) {
+    setImg(origin = this.porker) {
         let imgs = document.querySelector('#porker').querySelectorAll('img');
         imgs.forEach(item => {
             let res = origin.splice(0, 1);
@@ -213,11 +208,11 @@ class Porker {
         })
     }
 }
-// 打开折叠类
+// 打开折叠
 class Controls {
     constructor(openFlag, coverAllFlag) {
-        openFlag,
-        coverAllFlag
+        this.openFlag = openFlag,
+        this.coverAllFlag = coverAllFlag
     };
     // 展开,使用vw，vh做响应式
     openPorker() {
@@ -271,7 +266,7 @@ class Controls {
         this.coverAllFlag = !this.coverAllFlag;
     }
 }
-let controls = new Controls(true, true);
+
 
 // 顺序显示
 function sortPorkerAndDisplay() {
@@ -312,8 +307,11 @@ function EventOne() {
 // 每个按钮添加事件
 function addEvents() {
     EventOne();
+    
     document.querySelector('#washed').addEventListener('click', washPorkerAndDisplay);
     document.querySelector('#origin').addEventListener('click', sortPorkerAndDisplay);
+
+    let controls = new Controls(true, true);
     document.querySelector('#zhankai').addEventListener('click', controls.openPorkerOrClose.bind(controls));
     document.querySelector('#coverAll').addEventListener('click', controls.coverAll);
 }
