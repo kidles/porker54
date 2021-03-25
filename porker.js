@@ -1,32 +1,32 @@
 // 牌组
 class Porker {
     constructor() {
-            this.huaSe = ['方块', '红桃', '梅花', '黑桃'];
-            this.shuZi = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K'];
-            // 存取字符串数组
-            this.porker = ['大王', '小王'];
-        }
-        // 原始牌组方法
+        this.huaSe = ['方块', '红桃', '梅花', '黑桃'];
+        this.shuZi = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K'];
+        // 存取字符串数组
+        this.porker = ['大王', '小王'];
+    }
+    // 原始牌组方法
     origin() {
-            for (let v of this.huaSe) {
-                for (let j of this.shuZi) {
-                    this.porker.push(v + j);
-                }
+        for (let v of this.huaSe) {
+            for (let j of this.shuZi) {
+                this.porker.push(v + j);
             }
-            return this.porker;
         }
-        // 洗牌方法
+        return this.porker;
+    }
+    // 洗牌方法
     washPorker() {
-            // 存放生成的新牌组
-            let newPorker = [];
-            for (let i = 0; i < this.porker.length; i++) {
-                let index = Math.floor(Math.random() * this.porker.length);
-                newPorker[i] = this.porker[index];
-            }
-            this.porker = newPorker;
-            return this.porker;
+        // 存放生成的新牌组
+        let newPorker = [];
+        for (let i = 0; i < this.porker.length; i++) {
+            let index = Math.floor(Math.random() * this.porker.length);
+            newPorker[i] = this.porker[index];
         }
-        // 设置字符串对应图片src
+        this.porker = newPorker;
+        return this.porker;
+    }
+    // 设置字符串对应图片src
     setImg(origin = this.porker) {
         let imgs = document.querySelector('#porker').querySelectorAll('img');
         imgs.forEach(item => {
@@ -212,40 +212,40 @@ class Porker {
 class Controls {
     constructor(openFlag, coverAllFlag) {
         this.openFlag = openFlag,
-        this.coverAllFlag = coverAllFlag
+            this.coverAllFlag = coverAllFlag
     };
     // 展开,使用vw，vh做响应式
     openPorker() {
-            let divs = document.querySelector('#porker').querySelectorAll('div');
-            let count = 0;
-            let c1 = 0,
-                c2 = 0,
-                c3 = 0;
-            divs.forEach((item, index) => {
-                if (index <= 17) {
-                    item.style.left = c1 + 'vw';
-                    c1 += 5;
-                    item.style.top = count + 'vh';
-                } else if (index > 17 && index <= 35) {
-                    item.style.left = c2 + 'vw';
-                    c2 += 5;
-                    item.style.top = count + 10 + 'vh';
-                } else {
-                    item.style.left = c3 + 'vw';
-                    c3 += 5;
-                    item.style.top = count + 20 + 'vh';
-                }
-            })
-        }
-        // 折叠
+        let divs = document.querySelector('#porker').querySelectorAll('div');
+        let count = 0;
+        let c1 = 0,
+            c2 = 0,
+            c3 = 0;
+        divs.forEach((item, index) => {
+            if (index <= 17) {
+                item.style.left = c1 + 'vw';
+                c1 += 5;
+                item.style.top = count + 'vh';
+            } else if (index > 17 && index <= 35) {
+                item.style.left = c2 + 'vw';
+                c2 += 5;
+                item.style.top = count + 10 + 'vh';
+            } else {
+                item.style.left = c3 + 'vw';
+                c3 += 5;
+                item.style.top = count + 20 + 'vh';
+            }
+        })
+    }
+    // 折叠
     closePorker() {
-            let divs = document.querySelector('#porker').querySelectorAll('div');
-            divs.forEach(item => {
-                item.style.left = 0;
-                item.style.top = 0;
-            })
-        }
-        // 一键控制展开，折叠
+        let divs = document.querySelector('#porker').querySelectorAll('div');
+        divs.forEach(item => {
+            item.style.left = 0;
+            item.style.top = 0;
+        })
+    }
+    // 一键控制展开，折叠
     openPorkerOrClose() {
         if (this.openFlag == true) {
             this.openPorker();
@@ -291,23 +291,10 @@ function EventOne() {
             flag ? item.style.opacity = 1 : item.style.opacity = 0;
         })
     });
-    imgs.forEach(item => {
-        item.addEventListener('mouseover', (e) => {
-            let flag = item.style.opacity == 0;
-            flag ? item.style.opacity = 1 : item.style.opacity = 0;
-        })
-    });
-    imgs.forEach(item => {
-        item.addEventListener('mouseout', (e) => {
-            let flag = item.style.opacity == 0;
-            flag ? item.style.opacity = 1 : item.style.opacity = 0;
-        })
-    });
 }
+EventOne();
 // 每个按钮添加事件
 function addEvents() {
-    EventOne();
-    
     document.querySelector('#washed').addEventListener('click', washPorkerAndDisplay);
     document.querySelector('#origin').addEventListener('click', sortPorkerAndDisplay);
 
